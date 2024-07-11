@@ -1,0 +1,170 @@
+﻿@using System.Data
+@using System.Data.SqlClient
+@model System.Data.DataTable
+
+
+@{
+    ViewBag.Title = "Podaci";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="refresh" content="30">
+    <title> Fermi </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .mystyle {
+            background-color: firebrick;
+            color: white;
+        }
+        .fermo {
+            background-color: steelblue;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form method="post" name="Display">
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <h2> Zastoji mašina </h2>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <p style="font-weight: bold;"> Ukupno 50002: @ViewBag.brojac2 </p>
+        <p style="font-weight: bold;"> Ukupno 50007: @ViewBag.brojac7 </p>
+        <p style="font-weight: bold;"> Ukupno 50008: @ViewBag.brojac8 </p>
+
+        @{
+            if (Model.Rows.Count > 0)
+            {
+                <table class="table table-bordered table-hover" border="1">
+                    <thead>
+                        <tr>
+                            <td>
+                                Detalji
+                            </td>
+                            <td>
+                                StopCode
+                            </td>
+                            <td>
+                                Date
+                            </td>
+                            <td>
+                                Macchina
+                            </td>
+                            <td>
+                                Descrizione
+                            </td>
+
+                            <td>
+                                Status
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach (DataRow dr in Model.Rows)
+                    {
+                <tr>
+                    <td>
+                        <button type="button" class="btn btn-info" onclick="location.href='@(Url.Action("Details", "Home", new { kod = @dr["MachCode"] }))'">
+                            Detalji:
+                            @{
+                                int brojac;
+                                if (Convert.ToInt32(dr["StopCode"]) == 50002)
+                                {
+                                    brojac = Convert.ToInt32(dr["Brojac"]);
+                                }
+                                else if (Convert.ToInt32(dr["StopCode"]) == 50007)
+                                {
+                                    brojac = Convert.ToInt32(dr["Brojac7"]);
+                                }
+                                else
+                                {
+                                    brojac = Convert.ToInt32(dr["Brojac8"]);
+                                }
+                            }
+
+                            @brojac
+
+                        </button>
+                    </td>
+                    @if (Convert.ToInt32(dr["StopCode"]) == 50008 || Convert.ToInt32(dr["StopCode"]) == 50007)
+                    {
+                        <td class="fermo">
+                            @dr["StopCode"]
+                        </td>
+                    }
+                    else
+                    { 
+                        <td>
+                            @dr["StopCode"]
+                        </td>
+                    }
+
+                    @if (dr["Status"] != System.DBNull.Value)
+                    {
+                        <td class="mystyle">
+                            @dr["DateRec"]<br />
+                            <b> @dr["TrajanjeZastoja"] </b>
+                        </td>
+                        <td class="mystyle">
+                            <b>@dr["MachCode"].ToString()</b>  <br />
+                            @dr["RoomCode"]
+                        </td>
+                        <td class="mystyle">@dr["DescrizioneFermo"].ToString() </td>
+                        @*<td> <button class="btn btn-danger" disabled> Preuzeto </button></td>*@
+                        <td>
+                            <button class="btn btn-danger" disabled> Preuzeto </button>
+                            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("OdbaciStatus2", "Home", new { kod = @dr["UniqueId"].ToString() })'"> Odbaci </button>
+
+                            @*<button type="button" id="dodaj" class="btn btn-success" onclick="location.href='@Url.Action("OdbaciStatus2", "Home", new { kod = @dr["UniqueId"].ToString() })'"> Odbaci </button>*@
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td>
+                            @dr["DateRec"] <br />
+                            <b> @dr["TrajanjeZastoja"]</b>
+                        </td>
+                        <td>
+                            <b>@dr["MachCode"].ToString()</b> <br />
+                            @dr["RoomCode"]
+                        </td>
+                        <td>@dr["DescrizioneFermo"].ToString() </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("ChangeStatus2", "Home", new { kod = @dr["UniqueId"].ToString() })'"> Preuzmi </button>
+                            <button class="btn btn-success" disabled> Odbaci </button>
+                        </td>
+
+                        @*<td> <button type="button" id="dodaj" class="btn btn-danger" onclick="location.href='@Url.Action("ChangeStatus2", "Home", new { kod = @dr["UniqueId"].ToString() })'"> Preuzmi </button></td>
+            <td> <button class="btn btn-success" disabled> Odbaci </button></td>*@
+                    }
+
+                </tr>
+
+                    }
+
+
+                </table>
+                <br />
+            }
+            else
+            {
+                <span> No records found!!</span>
+            }
+        }
+    </form>
+
+    <p><a onclick="location.href='@Url.Action("Index", "Home")'">Go Back to Previous Page</a></p>
+
+</body>
+
+</html>

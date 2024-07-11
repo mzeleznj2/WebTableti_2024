@@ -1,0 +1,138 @@
+﻿@model IEnumerable<WebTableti.TUBLAInfo>
+
+
+@{ ViewBag.Title = "Home Page"; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    @*<title>Hystory</title>*@
+ 
+
+    <style>
+    #slika {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+
+    #slika:hover {opacity: 0.7;}
+
+    /* The Modal (background) */
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    }
+
+    /* Add Animation */
+    .modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+    }
+
+    /* The Close Button */
+   /* .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    }*/
+       
+  
+    </style>
+
+</head>
+<body>
+
+    @*<div class="row">
+            <h2 class="col-sm-6">Izbornik</h2>
+        </div>*@
+
+    <br />
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <button style="height: 120px; width: 80%; margin-bottom: 20px; font-size: 20px;" type="button" class="btn btn-primary btn-group-lg btn-block" onclick="location.href='@Url.Action("About", "Home")  '">  Grupa 1 - Doppio </button>
+            </div>
+            <div class="col-md-4">
+                <button style="height: 120px; width: 80%; margin-bottom: 20px; font-size: 20px;" type="button" class="btn btn-primary btn-group-lg btn-block " onclick="location.href='@Url.Action("About2", "Home")'">  Grupa 2 - Mono  </button>
+            </div>
+            <div class="col-md-4 offset-md-4">
+                <button style="height: 120px; width: 80%; margin-bottom: 20px; font-size: 20px;" type="button" class="btn btn-primary btn-group-lg btn-block " onclick="location.href='@Url.Action("About3", "Home")'">  Grupa 3 - Collant </button>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <h4> <bold>Bitne informacije:</bold> </h4>
+    <br />
+
+
+    @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <b> @Html.DisplayFor(modelItem => item.datum) </b>
+                    </h5>
+                            @{
+                                string stil;
+                                string span;
+                                if (item.tip == 1)
+                                {
+                                    stil = "card-text alert alert-success ";
+                                    span = "glyphicon glyphicon-info-sign ";
+                                }
+                                else
+                                {
+                                    stil = "card-text alert alert-danger ";
+                                    span = "glyphicon glyphicon-warning-sign";
+                                }
+                            }
+                            <div class='@stil'>
+                                <span class='@span'> @Html.DisplayFor(modelItem => item.informacija)</span>
+                            </div>
+
+                            @{
+                                if (item.imageName != "" && item.imageName != null)
+                                {
+                                    <img class="card-img-top" src="~/Uploads/@item.imageName" alt="" width="300" height="300">
+
+
+                                }
+                            }
+                    <hr />
+                </div>
+            </div>
+   
+
+        }
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebTableti.RemontMach>
+
+@{
+    ViewBag.Title = "PopisRemont";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+  
+
+</head>
+<body>
+
+    <h3>PopisRemont</h3>
+    <hr />
+
+    <table id="table" class="table table-bordered table-hover" border="1">
+        <thead>
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.MachineId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DatumOd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Opis)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MachCode)
+                </th>
+
+
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachineId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatumOd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MachCode)
+                </td>
+
+
+            </tr>
+        }
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#table').DataTable({
+                order: [[0, 'desc']]
+            });
+
+        });
+    </script>
+
+</body>
+</html>

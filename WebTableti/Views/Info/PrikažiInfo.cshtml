@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebTableti.TUBLAInfo>
+
+@{
+    ViewBag.Title = "PrikažiInfo";
+    Layout = "~/Views/Shared/_LayoutMano.cshtml";
+}
+
+<h3> Prikz svih unesenih poruka </h3>
+
+<hr />
+
+<table class="table table-bordered table-hover" border="1"> 
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.datum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.informacija)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tip)
+        </th>
+        <th>
+            Slika
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.datum)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.informacija)
+    </td>
+    <td>       
+        @{ 
+            string poruka;
+            string klasa;
+            if (item.tip == 1)
+            {
+                poruka = "Obavijest";
+                klasa = "glyphicon glyphicon-info-sign";
+            }
+            else
+            {
+                poruka = "Upozorenje";
+                klasa = "glyphicon glyphicon-warning-sign";
+            }
+        }
+        <span class='@klasa'> @poruka</span>
+    </td>
+
+    <td>
+        @{ 
+            if (item.tip2 != "" && item.tip2 != null)
+            {
+                <img alt="Uploaded Image" src="~/Uploads/@item.imageName" width="50" height="50" />
+            }
+
+            else
+            {
+                <img alt="Uploaded Image" src="~/Uploads/no-image.png" width="50" height="50" />
+            }
+         }
+
+    </td>
+
+    <td>       
+       <span class="glyphicon glyphicon-remove"></span> @Html.ActionLink("Obriši", "Delete", new { id = item.idInfo })
+    </td>
+</tr>
+}
+
+</table>

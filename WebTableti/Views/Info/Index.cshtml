@@ -1,0 +1,63 @@
+﻿@model WebTableti.TUBLAInfo
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMano.cshtml";
+}
+
+<h3>Dodaj poruku</h3>
+
+
+
+
+@using (Html.BeginForm("DodajInfo", "Info", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tip, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <label> <span class="glyphicon glyphicon-info-sign alert-success"> Obavijest </span> </label>  @Html.RadioButtonFor(model => model.tip, 1, new { htmlAttributes = new { @class = "form-control" }, Checked = "checked" })
+                <label><span class="glyphicon glyphicon-warning-sign alert-danger"> Upozorenje </span>  </label>  @Html.RadioButtonFor(model => model.tip, 2, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.informacija, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.informacija, new { htmlAttributes = new { @class = "form-control" }, @cols = "80", @rows = "4" })
+                @Html.ValidationMessageFor(model => model.informacija, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="fileSlika">Upload slike</label>
+            <input type="file" class="form-control-file" name="postedFile" id="fileSlika">
+
+        </div>
+
+
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dodaj poruku" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<hr />
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

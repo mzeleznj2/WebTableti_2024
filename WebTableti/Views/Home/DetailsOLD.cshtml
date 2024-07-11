@@ -1,0 +1,92 @@
+﻿@using System.Data
+@using System.Data.SqlClient
+@model System.Data.DataTable
+
+@{
+    ViewBag.Title = "Povijest grešaka po stroju";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hystory</title>
+
+</head>
+
+<body>
+
+    <h3> Povijest grešaka @*po stroju @ViewBag.Data*@ </h3>
+
+    <table class="table table-bordered table-hover" border="1">
+        <thead>
+            <tr>
+                <td>
+                    Date
+                </td>
+                @*<td>
+                    MachCode
+                </td>*@
+                <td>
+                    Descrizione
+                </td>
+                <td>
+                    Shift
+                </td>
+                <td>
+                    Radnica/Mehaničar
+                </td>
+            </tr>
+        </thead>
+
+
+        @foreach (DataRow dr in Model.Rows)
+         {
+
+            <tr>
+                <td>@dr["DateRec"] </td>
+                @*<td>@dr["MachCode"] </td>*@
+                <td>@dr["Text"] <br />
+                                <b>@dr["StopCode"]</b></td>
+                <td>@dr["Shift"]</td>
+                <td>                
+                    @{ 
+                        string radnica = "";
+                        string greska = "";
+
+                        try
+                        {
+                            using (var context = new dbNautilusEntities1())
+                            {
+                                int kod = Convert.ToInt32(dr["UserCode"].ToString().Trim());
+
+                                if (context.OPERATORS.Any(a => a.OpCode == kod))
+                                {
+                                    radnica = context.OPERATORS.Where(a => a.OpCode == kod)
+                                                               .Select(p => p.FirstName + " " + p.LastName)
+                                                               .FirstOrDefault();
+                                }
+                                else
+                                {
+                                    radnica = dr["UserCode"].ToString();
+                                }
+                            }
+                        }
+                        catch (FormatException ex)
+                        {
+                            
+                        }
+
+                     }
+
+                    @radnica 
+
+                </td>
+            </tr>
+         }
+    </table>
+    <br />
+    <p><a href='javascript:history.go(-1)'>Go Back to Previous Page</a></p>
+
+</body>
+</html>

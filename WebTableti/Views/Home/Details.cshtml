@@ -1,0 +1,167 @@
+﻿@model WebTableti.Models.ViewModel
+
+@{
+    ViewBag.Title = "Povijest grešaka po stroju";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hystory</title>
+
+</head>
+
+<body>
+
+    <h3> Povijest grešaka @*po stroju @ViewBag.Data*@ </h3>
+
+    <table class="table table-bordered table-hover" border="1">
+        <thead>
+            <tr>
+                <td>
+                    Date
+                </td>
+                @*<td>
+                    MachCode
+                </td>*@
+                <td>
+                    Descrizione
+                </td>
+                <td>
+                    Shift
+                </td>
+                <td>
+                    Radnica/Mehaničar
+                </td>
+            </tr>
+        </thead>
+
+        @if (Model.podaciDetalji.Count() > 0)
+        {
+
+            foreach (WebTableti.Models.PodaciDetalji podaci in Model.podaciDetalji)
+            {
+
+                <tr>
+                    <td>@podaci.datum</td>
+                    @*<td>@dr["MachCode"] </td>*@
+                    <td>
+                        @podaci.poruka<br />
+                        <b>@podaci.stopKod</b>
+                    </td>
+                    <td>@podaci.Shift</td>
+                    <td>
+                        @{
+                            string radnica = "";
+
+                            try
+                            {
+                                using (var context = new dbNautilusEntities1())
+                                {
+                                    int kod = Convert.ToInt32(podaci.User.ToString().Trim());
+
+                                    if (context.OPERATORS.Any(a => a.OpCode == kod))
+                                    {
+                                        radnica = context.OPERATORS.Where(a => a.OpCode == kod)
+                                                                   .Select(p => p.FirstName + " " + p.LastName)
+                                                                   .FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        radnica = podaci.User.ToString();
+                                    }
+                                }
+                            }
+                            catch (FormatException ex)
+                            {
+
+                            }
+
+                        }
+
+                        @radnica
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <div3> Nema podataka za prikaz!!</div3>
+        }
+    </table>
+        <br />
+
+        <h3> Povijest 50006 po liniji @TempData["linija"] </h3>
+
+        <table class="table table-bordered table-hover" border="1">
+            <thead>
+                <tr>
+                    <td>
+                        Date
+                    </td>
+                    <td>
+                        MachCode
+                    </td>
+                    <td>
+                        Descrizione
+                    </td>
+                    <td>
+                        Radnica/Mehaničar
+                    </td>
+                </tr>
+            </thead>
+            
+
+            @foreach (WebTableti.Models.PodaciDetalji podaci in Model.podacidetalji06)
+            {
+
+                <tr>
+                    <td>@podaci.datum</td>
+                    @*<td>@dr["MachCode"] </td>*@
+                    <td>@podaci.kodMasine</td>
+                    <td>
+                        @podaci.poruka<br />
+                        <b>@podaci.stopKod</b>
+                    </td>
+                    <td>
+                        @{
+                            string radnica = "";
+
+                            try
+                            {
+                                using (var context = new dbNautilusEntities1())
+                                {
+                                    int kod = Convert.ToInt32(podaci.User.ToString().Trim());
+
+                                    if (context.OPERATORS.Any(a => a.OpCode == kod))
+                                    {
+                                        radnica = context.OPERATORS.Where(a => a.OpCode == kod)
+                                                                   .Select(p => p.FirstName + " " + p.LastName)
+                                                                   .FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        radnica = podaci.User.ToString();
+                                    }
+                                }
+                            }
+                            catch (FormatException ex)
+                            {
+
+                            }
+
+                        }
+
+                        @radnica
+
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <p><a href='javascript:history.go(-1)'>Go Back to Previous Page</a></p>
+
+    </body>
+</html>
